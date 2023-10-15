@@ -4,8 +4,6 @@ Originally made for Terralization Modpack with fixes from several different fork
 
 #### Download at [curseforge](https://www.curseforge.com/minecraft/mc-mods/mekanism-ce)
 
-#### Builds at our [maven](https://maven.thorfusion.com/ui/repos/tree/General/thorfusion/mekanism/Mekanism-1.12.2-Community-Edition)
-
 ### Building Mekanism 1.12.2 Community Edition
 
 ```bash
