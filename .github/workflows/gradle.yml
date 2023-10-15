@@ -1,35 +1,24 @@
-# This workflow will build a Java project with Gradle
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
+name: Java CI with Gradle
 
-name: Check code
-
-on:
-  push:
-    paths-ignore:
-      - '**/README.md'
-      - '**/Mekanism.txt'
-  schedule:
-    - cron: '0 12 1 * *'
+on: [ push, pull_request ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 8
-        uses: actions/setup-java@v2
+      - uses: actions/checkout@v3
         with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
           java-version: '8'
-          distribution: 'adopt'
+          cache: 'gradle'
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Build and Publish
-        run: ./gradlew fullbuild artifactoryPublish
-        env:
-          MAVEN_URL: ${{ secrets.MAVEN_URL }}
-          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.MAVEN_TOKEN }}
-          MAVEN_REPO: ${{ secrets.MAVEN_DEVREPO }}
-          BUILD_VER: ${{ github.run_number }}
+      - name: Build the mod
+        run: ./gradlew --no-daemon fullbuild
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Download
+          path: build/libs
